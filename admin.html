@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALIFITNESS - Sistema Completo</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#0d001a 0%,#1c002e 100%);
+  color:#fff;min-height:100vh
+}
+.header{text-align:center;padding:30px;border-bottom:3px solid #a200ff}
+.header img{width:90px;height:90px;border-radius:50%;border:3px solid #a200ff;margin-bottom:10px}
+.header h1{color:#a200ff;font-size:2.3em}
+.container{max-width:1000px;margin:40px auto;padding:20px}
+.card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(162,0,255,0.4);
+  border-radius:15px;padding:25px;margin-bottom:30px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 4px 15px rgba(0,0,0,0.4)
+}
+.card h2{color:#a200ff;margin-bottom:15px}
+.input-group{margin-bottom:15px}
+.input-group label{display:block;font-weight:600;margin-bottom:5px}
+.input-group input{
+  width:100%;padding:12px;border-radius:8px;
+  border:2px solid rgba(162,0,255,0.3);
+  background:rgba(255,255,255,0.1);
+  color:#fff;font-size:15px;transition:0.3s
+}
+.input-group input:focus{border-color:#a200ff;outline:none}
+.btn{
+  background:linear-gradient(135deg,#a200ff,#ff00b7);
+  border:none;color:#fff;font-weight:600;
+  padding:12px 20px;border-radius:10px;
+  cursor:pointer;font-size:15px;transition:0.3s
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(162,0,255,0.5)}
+.btn-secondary{background:rgba(255,255,255,0.1);color:#ccc}
+.btn-pay{
+  background:linear-gradient(135deg,#00ff9d,#00b7ff);
+  color:#000;font-weight:700;
+}
+.btn-delete{
+  background:linear-gradient(135deg,#ff3b3b,#a20000);
+  color:#fff;font-weight:700;
+}
+.message{display:none;padding:10px;border-radius:8px;text-align:center;margin-bottom:10px}
+.message.success{background:rgba(0,255,0,0.1);border:1px solid #00ff00;color:#00ff66}
+.message.error{background:rgba(255,0,0,0.1);border:1px solid #ff3333;color:#ff6666}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:15px;margin-bottom:20px
+}
+.stat-card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(162,0,255,0.3);
+  border-radius:10px;text-align:center;padding:20px
+}
+.stat-number{color:#a200ff;font-size:2em;font-weight:700}
+.stat-label{color:#bbb}
+table{width:100%;border-collapse:collapse;color:#fff;font-size:14px}
+th,td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.1);text-align:left}
+th{color:#a200ff}
+tbody tr:hover{background:rgba(255,255,255,0.05)}
+.status-btn{
+  padding:5px 10px;border-radius:20px;
+  font-size:12px;font-weight:600;border:none;cursor:pointer
+}
+.status-pago{background:#00ff88;color:#000}
+.status-atrasado{background:#ff3366;color:#fff}
+.actions{
+  display:flex;
+  gap:8px;
+}
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.checkbox-label {
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  font-size: 15px;
+  user-select: none;
+  color: #fff;
+}
+.checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+.checkmark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 20px;
+  width: 20px;
+  background-color: rgba(255,255,255,0.1);
+  border: 2px solid rgba(162,0,255,0.6);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+.checkbox-label:hover .checkmark {
+  background-color: rgba(162,0,255,0.2);
+}
+.checkbox-label input:checked ~ .checkmark {
+  background: linear-gradient(135deg, #a200ff, #ff00b7);
+  border-color: transparent;
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.checkbox-label input:checked ~ .checkmark:after {
+  display: block;
+}
+.checkbox-label .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+@media(max-width:768px){
+  .header h1{font-size:1.8em}
+  table{font-size:12px}
+  .container{padding:10px}
+  td,th{padding:8px}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <img src="IMAGENS/ALIFI.jpg" alt="Logo ALIFITNESS" style="border-radius: 20px;">
+  <h1>ALIFITNESS </h1>
+</div>
+
+<div class="container">
+  <!-- LOGIN -->
+  <div id="loginSection" class="card">
+    <h2>Login Administrativo</h2>
+    <div id="loginMessage" class="message"></div>
+    <form id="loginForm">
+      <div class="input-group"><label>Email</label><input type="email" id="loginEmail" required></div>
+      <div class="input-group"><label>Senha</label><input type="password" id="loginPassword" required></div>
+      <button type="submit" class="btn">Entrar</button>
+      <footer style="
+  width:100%;
+  text-align:center;
+  margin-top:45px;
+  padding:18px 0;
+  font-size:0.85em;
+  background:rgba(255,255,255,0.03);
+  border-top:1px solid rgba(162,0,255,0.15);
+  backdrop-filter:blur(8px);
+  color:#a200ff;
+  text-shadow:0 0 10px #5a0077;
+">
+  Desenvolvido pela 
+  <a href="https://www.instagram.com/codingtech_ti/" target="_blank" style="color:#ff5cff; text-decoration:none;">
+    CodingTech
+  </a>
+</footer>
+
+    </form>
+  </div>
+
+  <!-- PAINEL ADMIN -->
+  <div id="adminPanel" style="display:none;">
+    <div class="stats">
+      <div class="stat-card"><div class="stat-number" id="totalAlunos">0</div><div class="stat-label">Total</div></div>
+      <div class="stat-card"><div class="stat-number" id="alunosPagos">0</div><div class="stat-label">Pagos</div></div>
+      <div class="stat-card"><div class="stat-number" id="alunosAtrasados">0</div><div class="stat-label">Atrasados</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Cadastrar Aluno</h2>
+      <div id="formMessage" class="message"></div>
+      <form id="clientForm">
+        <div class="input-group"><label>Nome</label><input type="text" id="nome" required></div>
+        <div class="input-group"><label>Data de Nascimento</label><input type="text" id="cpf" maxlength="14" required></div>
+        <div class="input-group"><label>Valor (R$)</label><input type="number" id="valor" step="0.01" required></div>
+        <div class="input-group"><label>Dia do Vencimento</label><input type="number" id="diaVencimento" min="1" max="31" required></div>
+        <div class="input-group checkbox-group">
+          <label for="pago" class="checkbox-label">
+            <input type="checkbox" id="pago">
+            <span class="checkmark"></span>
+            Mensalidade paga
+          </label>
+        </div>
+        <button type="submit" class="btn">Salvar</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Clientes Cadastrados</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+            <th>Valor</th>
+            <th>Data Entrada</th>
+            <th>Vencimento</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="clientsList"><tr><td colspan="7" style="text-align:center;">Nenhum cliente</td></tr></tbody>
+      </table>
+    </div>
+    <button onclick="adminLogout()" class="btn btn-secondary">Sair</button>
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig={
+  apiKey: "AIzaSyAPchsTk5OEL0GQ48P-5YXxmhM-SbBx2gY",
+  authDomain: "alifitnes-c354b.firebaseapp.com",
+  projectId: "alifitnes-c354b",
+  storageBucket: "alifitnes-c354b.appspot.com",
+  messagingSenderId: "425425976553",
+  appId: "1:425425976553:web:b3e4c4a3bd825651f0c478"
+};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+const db=firebase.firestore();
+
+// Login
+loginForm.addEventListener("submit",async(e)=>{
+  e.preventDefault();
+  try{
+    await auth.signInWithEmailAndPassword(loginEmail.value,loginPassword.value);
+    loginSection.style.display="none";adminPanel.style.display="block";loadClients();
+  }catch(err){showMessage("loginMessage","Email ou senha inválidos","error");}
+});
+
+function showMessage(id,msg,type){
+  const el=document.getElementById(id);
+  el.textContent=msg;el.className=`message ${type}`;
+  el.style.display="block";setTimeout(()=>el.style.display="none",4000);
+}
+
+// Cadastrar Cliente
+clientForm.addEventListener("submit",async(e)=>{
+  e.preventDefault();
+  const dataEntrada=new Date();
+  const vencimento=new Date();
+  vencimento.setDate(dataEntrada.getDate()+30);
+  const client={
+    nome:nome.value,
+    cpf:cpf.value,
+    valor:parseFloat(valor.value),
+    diaVencimento:parseInt(diaVencimento.value),
+    pago:pago.checked,
+    dataEntrada:dataEntrada.toLocaleDateString('pt-BR'),
+    vencimento:vencimento.toLocaleDateString('pt-BR')
+  };
+  try{
+    await db.collection("clientes").doc(client.cpf).set(client);
+    showMessage("formMessage", "Cliente cadastrado com sucesso!","success");
+    clientForm.reset();loadClients();
+  }catch(err){
+    showMessage("formMessage","Erro ao salvar no Firestore","error");
+  }
+});
+
+// Carregar Clientes
+async function loadClients(){
+  const tbody=document.getElementById("clientsList");
+  tbody.innerHTML="";
+  const snapshot=await db.collection("clientes").get();
+  if(snapshot.empty){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;">Nenhum cliente</td></tr>';
+    updateStats(0,0,0);return;
+  }
+  let total=0,pagos=0,atrasados=0;
+  snapshot.forEach(doc=>{
+    const c=doc.data();total++;
+    if(c.pago)pagos++;else atrasados++;
+    const msg=`Olá! 👋 Vim solicitar o PIX referente à mensalidade de R$ ${c.valor.toFixed(2)} do aluno ${c.nome} (Data de nascimento: ${c.cpf}).`;
+    const link=`https://wa.me/5599999999999?text=${encodeURIComponent(msg)}`;
+    const row=`<tr>
+      <td>${c.nome}</td>
+      <td>${c.cpf}</td>
+      <td>R$ ${c.valor.toFixed(2)}</td>
+      <td>${c.dataEntrada}</td>
+      <td>${c.vencimento}</td>
+      <td><button class="status-btn ${c.pago?'status-pago':'status-atrasado'}" onclick="toggleStatus('${c.cpf}',${!c.pago})">${c.pago?'Pago ✅':'Atrasado 🔴'}</button></td>
+      <td class="actions">
+        <a href="${link}" target="_blank"><button class="btn btn-pay">💸 Pagar</button></a>
+        <button class="btn btn-delete" onclick="deleteClient('${c.cpf}','${c.nome}')">🗑️ Excluir</button>
+      </td>
+    </tr>`;
+    tbody.innerHTML+=row;
+  });
+  updateStats(total,pagos,atrasados);
+}
+
+// Atualizar status (Pago/Atrasado)
+async function toggleStatus(cpf,newStatus){
+  try {
+    await db.collection("clientes").doc(cpf).update({pago:newStatus});
+    if(newStatus){
+      const novoVencimento = new Date();
+      novoVencimento.setDate(novoVencimento.getDate()+30);
+      await db.collection("clientes").doc(cpf).update({
+        vencimento: novoVencimento.toLocaleDateString('pt-BR')
+      });
+    }
+    showMessage("formMessage",`Status atualizado para ${newStatus?'Pago ✅':'Atrasado 🔴'}`,"success");
+    loadClients();
+  } catch(err){
+    showMessage("formMessage","Erro ao atualizar status no Firestore","error");
+  }
+}
+
+// Excluir cliente
+async function deleteClient(cpf,nome){
+  const confirmDelete = confirm(`Deseja realmente excluir o aluno "${nome}"?`);
+  if(confirmDelete){
+    await db.collection("clientes").doc(cpf).delete();
+    showMessage("formMessage",`Aluno "${nome}" excluído com sucesso!`,"success");
+    loadClients();
+  }
+}
+
+// Atualizar estatísticas
+function updateStats(total,pagos,atrasados){
+  totalAlunos.textContent=total;
+  alunosPagos.textContent=pagos;
+  alunosAtrasados.textContent=atrasados;
+}
+
+// Logout
+async function adminLogout(){
+  await auth.signOut();
+  adminPanel.style.display="none";loginSection.style.display="block";
+}
+</script>
+</body>
+</html>

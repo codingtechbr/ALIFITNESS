@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALIFITNESS | Painel do Cliente</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:radial-gradient(circle at top left,#1b002c,#0a0016 80%);
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding:20px;
+  overflow-x:hidden;
+}
+header{text-align:center;margin-top:25px;animation:fadeInDown 1s ease;}
+header img{width:110px;height:110px;border-radius:50%;border:3px solid #a200ff;box-shadow:0 0 20px rgba(162,0,255,0.6);object-fit:cover;}
+header h1{font-size:2.4em;font-weight:700;color:#a200ff;margin-top:10px;}
+header p{color:#ccc;font-size:0.95em;}
+.container{width:100%;max-width:450px;margin-top:40px;}
+.card{background:rgba(255,255,255,0.05);border:1px solid rgba(162,0,255,0.25);border-radius:20px;padding:35px 30px;backdrop-filter:blur(12px);box-shadow:0 8px 30px rgba(0,0,0,0.5);animation:fadeInUp 1s ease;transition:0.4s;}
+.card:hover{box-shadow:0 0 25px rgba(162,0,255,0.4);}
+h2{text-align:center;color:#a200ff;font-size:1.5em;font-weight:600;margin-bottom:25px;}
+.input-group{margin-bottom:20px;}
+label{display:block;margin-bottom:8px;color:#aaa;font-size:0.9em;}
+input{width:100%;padding:14px;border-radius:10px;border:2px solid rgba(162,0,255,0.25);background:rgba(255,255,255,0.04);color:#fff;font-size:16px;transition:all 0.3s ease;}
+input:focus{border-color:#a200ff;box-shadow:0 0 10px rgba(162,0,255,0.4);outline:none;}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,#a200ff,#ff00b7);color:#fff;font-weight:600;font-size:1em;cursor:pointer;transition:all 0.3s ease;}
+.btn:hover{transform:translateY(-3px);box-shadow:0 6px 15px rgba(162,0,255,0.5);}
+.btn-pay{background:linear-gradient(135deg,#00ff99,#00bfa5);color:#000;font-weight:700;}
+.btn-pay:hover{box-shadow:0 0 20px rgba(0,255,153,0.5);transform:scale(1.02);}
+.logout-btn{background:rgba(255,0,60,0.3);border:1px solid #ff2a6d;margin-top:10px;}
+.logout-btn:hover{background:rgba(255,0,60,0.5);box-shadow:0 0 10px rgba(255,0,60,0.4);}
+.info-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #a200ff;border-radius:15px;padding:25px;margin-bottom:25px;animation:fadeIn 1s ease;}
+.info-card h3{color:#a200ff;margin-bottom:15px;font-size:1.2em;}
+.info-item{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.1);padding:10px 0;font-size:0.95em;}
+.status-badge{padding:6px 15px;border-radius:20px;font-weight:600;font-size:0.85em;}
+.status-pago{background:#00ff99;color:#000;}
+.status-atrasado{background:#ff3366;color:#fff;}
+.message{text-align:center;padding:12px;border-radius:10px;margin-bottom:15px;font-size:0.9em;display:none;}
+.message.error{background:rgba(255,0,0,0.15);border:1px solid #ff4444;color:#ff6666;}
+.message.success{background:rgba(0,255,100,0.15);border:1px solid #00ff99;color:#66ff99;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@media(max-width:600px){.card{padding:25px 20px;}header h1{font-size:1.8em;}}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="IMAGENS/ALIFI.jpg" alt="Logo ALIFITNESS" style="border-radius: 20px;">
+  <h1>ALIFITNESS</h1>
+  <p>Seu treino. Sua evolução.</p>
+</header>
+
+<div class="container">
+  <!-- Login -->
+  <div id="loginSection" class="card">
+    <h2>Acesso do Cliente</h2>
+    <div id="message" class="message"></div>
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="cpf">Digite sua data de Nascimento</label>
+        <input type="text" id="cpf" placeholder="00/00/0000" maxlength="14" required>
+      </div>
+      <button type="submit" class="btn">Entrar</button>
+      <footer style="
+  width:100%;
+  text-align:center;
+  margin-top:45px;
+  padding:18px 0;
+  font-size:0.85em;
+  background:rgba(255,255,255,0.03);
+  border-top:1px solid rgba(162,0,255,0.15);
+  backdrop-filter:blur(8px);
+  color:#a200ff;
+  text-shadow:0 0 10px #5a0077;
+">
+  Desenvolvido pela 
+  <a href="https://www.instagram.com/codingtech_ti/" target="_blank" style="color:#ff5cff; text-decoration:none;">
+    CodingTech
+  </a>
+</footer>
+
+    </form>
+  </div>
+
+  <!-- Painel -->
+  <div id="clientPanel" style="display:none;" class="card">
+    <div class="info-card">
+      <h3>Bem-vindo(a), <span id="clientName"></span>!</h3>
+      <div class="info-item"><span>Mensalidade:</span><span id="mensalidade"></span></div>
+      <div class="info-item"><span>Entrada:</span><span id="dataEntrada"></span></div>
+      <div class="info-item"><span>Próxima Fatura:</span><span id="proximaFatura"></span></div>
+      <div class="info-item"><span>Status:</span><span id="status" class="status-badge">--</span></div>
+      <div id="pendencia" style="margin-top:10px;color:#ff6666;display:none;font-weight:600;">Você tem pendências. Efetue seu pagamento e libere seus treinos!</div>
+    </div>
+    <button onclick="fazerPagamento()" class="btn btn-pay" style="margin-bottom: 30px;">Fazer Pagamento</button>
+    <button id="btnTreino" onclick="verTreino()" class="btn" style="margin-bottom: 100px;">Ver Treino</button>
+    <button onclick="logout()" class="btn logout-btn">Sair</button>
+  </div>
+  <footer style="
+  width:100%;
+  text-align:center;
+  margin-top:45px;
+  padding:18px 0;
+  font-size:0.85em;
+  background:rgba(255,255,255,0.03);
+  border-top:1px solid rgba(162,0,255,0.15);
+  backdrop-filter:blur(8px);
+  color:#a200ff;
+  text-shadow:0 0 10px #5a0077;
+">
+  Desenvolvido pela 
+  <a href="https://www.instagram.com/codingtech_ti/" target="_blank" style="color:#ff5cff; text-decoration:none;">
+    CodingTech
+  </a>
+</footer>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig={
+  apiKey:"AIzaSyAPchsTk5OEL0GQ48P-5YXxmhM-SbBx2gY",
+  authDomain:"alifitnes-c354b.firebaseapp.com",
+  projectId:"alifitnes-c354b",
+  storageBucket:"alifitnes-c354b.appspot.com",
+  messagingSenderId:"425425976553",
+  appId:"1:425425976553:web:b3e4c4a3bd825651f0c478"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+const cpfInput = document.getElementById("cpf");
+
+cpfInput.addEventListener("input", (e) => {
+  let v = e.target.value.replace(/\D/g, ""); // só números
+
+  if (v.length > 8) v = v.slice(0, 8); // limita a 8 números
+
+  // monta a data
+  if (v.length >= 5) {
+    v = v.replace(/(\d{2})(\d{2})(\d{1,4})/, "$1/$2/$3");
+  } else if (v.length >= 3) {
+    v = v.replace(/(\d{2})(\d{1,2})/, "$1/$2");
+  }
+
+  e.target.value = v;
+});
+
+
+// Mensagem
+function showMessage(msg,type){
+  const el=document.getElementById("message");
+  el.textContent=msg;
+  el.className=`message ${type}`;
+  el.style.display="block";
+  setTimeout(()=>el.style.display="none",4000);
+}
+
+// Login
+document.getElementById("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  // continua com id="cpf" mesmo, sem problema
+  const cpfValue = document.getElementById("cpf").value.replace(/\D/g, "");
+
+  // valida 8 dígitos para data (DDMMYYYY)
+  if (cpfValue.length !== 8) {
+    showMessage("Data inválida. Use o formato DD/MM/AAAA", "error");
+    return;
+  }
+
+  try {
+    // agora busca no banco pelo valor da data (ex: 06122020)
+    const docSnap = await db.collection("clientes").doc(cpfValue).get();
+
+    if (!docSnap.exists) {
+      showMessage("Data não encontrada. Fale com a recepção 💪", "error");
+      return;
+    }
+
+    const data = docSnap.data();
+    data.cpf = cpfValue; // mantém o nome cpf no sistema
+
+    localStorage.setItem("cliente", JSON.stringify(data));
+    showClient(data);
+
+  } catch (err) {
+    showMessage("Erro ao conectar", "error");
+    console.error(err);
+  }
+});
+
+
+/*
+  Robust date parsing:
+  - Accepts Firestore Timestamp { seconds, nanoseconds }
+  - Accepts numeric milliseconds
+  - Accepts ISO 'yyyy-mm-dd' strings
+  - Accepts 'dd/mm/yyyy' strings
+*/
+function parseToDate(raw){
+  if(raw == null) return null;
+
+  // Firestore timestamp
+  if(typeof raw === 'object' && (raw.seconds !== undefined)){
+    return new Date(raw.seconds * 1000);
+  }
+
+  // already Date
+  if(raw instanceof Date) return raw;
+
+  // number (ms)
+  if(typeof raw === 'number') return new Date(raw);
+
+  // string
+  if(typeof raw === 'string'){
+    const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})/); // yyyy-mm-dd
+    if(isoMatch){
+      const y = parseInt(isoMatch[1],10);
+      const m = parseInt(isoMatch[2],10) - 1;
+      const d = parseInt(isoMatch[3],10);
+      return new Date(y,m,d);
+    }
+    const brMatch = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})/); // dd/mm/yyyy
+    if(brMatch){
+      const d = parseInt(brMatch[1],10);
+      const m = parseInt(brMatch[2],10) - 1;
+      const y = parseInt(brMatch[3],10);
+      return new Date(y,m,d);
+    }
+    // fallback: try Date constructor but not rely on it for display
+    const fallback = new Date(raw);
+    if(!isNaN(fallback)) return fallback;
+  }
+
+  return null;
+}
+
+// Always returns DD/MM/YYYY string (forced)
+function formatDateDDMMYYYY(raw){
+  const date = parseToDate(raw);
+  if(!date || isNaN(date)) return '--/--/----';
+  const day = String(date.getDate()).padStart(2,'0');
+  const month = String(date.getMonth()+1).padStart(2,'0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+// Add exactly one calendar month, but clamp day to last day of target month when needed
+function addOneMonthClamped(date){
+  if(!(date instanceof Date) || isNaN(date)) return null;
+  const d = date.getDate();
+  const y = date.getFullYear();
+  const m = date.getMonth();
+  const targetYear = (m === 11) ? y + 1 : y;
+  const targetMonth = (m + 1) % 12;
+  // last day of target month:
+  const lastDay = new Date(targetYear, targetMonth + 1, 0).getDate();
+  const dayToUse = Math.min(d, lastDay);
+  return new Date(targetYear, targetMonth, dayToUse);
+}
+
+function showClient(data){
+  document.getElementById("loginSection").style.display="none";
+  document.getElementById("clientPanel").style.display="block";
+  document.getElementById("clientName").textContent = data.nome || 'Cliente';
+  document.getElementById("mensalidade").textContent = `R$ ${parseFloat(data.valor||0).toFixed(2)}`;
+
+  const entradaDate = parseToDate(data.dataEntrada);
+  document.getElementById("dataEntrada").textContent = formatDateDDMMYYYY(entradaDate);
+
+  const proxima = addOneMonthClamped(entradaDate);
+  document.getElementById("proximaFatura").textContent = formatDateDDMMYYYY(proxima);
+    
+  const statusEl = document.getElementById("status");
+  const botaoTreino = document.getElementById("btnTreino");
+  const pendencia = document.getElementById("pendencia");
+
+  if(data.pago === true){
+    statusEl.textContent = "Em dia ✅";
+    statusEl.className = "status-badge status-pago";
+    botaoTreino.style.display = "block";
+    pendencia.style.display = "none";
+  } else {
+    statusEl.textContent = "Não pago! 🔴";
+    statusEl.className = "status-badge status-atrasado";
+    botaoTreino.style.display = "none";
+    pendencia.style.display = "block";
+  }
+}
+function logout(){
+  localStorage.removeItem("cliente");
+  document.getElementById("clientPanel").style.display="none";
+  document.getElementById("loginSection").style.display="block";
+  document.getElementById("cpf").value="";
+}
+
+function verTreino(){ window.location.href = "treino.html"; }
+
+function fazerPagamento(){
+  const cliente = JSON.parse(localStorage.getItem("cliente") || '{}');
+  const msg = `Olá! Sou ${cliente.nome || ''}, CPF ${cliente.cpf || ''}. Gostaria de realizar o pagamento da minha mensalidade no valor de R$ ${parseFloat(cliente.valor||0).toFixed(2)} 💪`;
+  const url = `https://wa.me/557592337339?text=${encodeURIComponent(msg)}`;
+  window.open(url,'_blank');
+}
+
+window.addEventListener("load",()=>{
+  const cliente = localStorage.getItem("cliente");
+  if(cliente) showClient(JSON.parse(cliente));
+});
+</script>
+</body>
+</html>
